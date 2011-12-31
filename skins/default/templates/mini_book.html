@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title><roundcube:object name="pagetitle" /></title>
+	</head>
+	<body>
+		<h3 style="text-align:center"><roundcube:object name="plugin.act_title" /></h3>
+<script type="text/javascript">
+$(function(){
+	$(window).focus();
+	var target=$('textarea[id=<roundcube:object name="plugin.target" />]',window.opener.document.body)
+	//Inito
+	$.each($('.mail_addr'),function(i,v){
+		if(target.val().indexOf($(v).text())>-1){
+			$(v).addClass('sel_addr')
+		}
+	});
+
+	//Select
+	$('.mail_addr').click(function(){
+		if($(this).hasClass('sel_addr')){
+			mail=$(this).text();
+			str=target.val().split(',');
+			new_str='';
+			for(n=0;n<str.length;n++){
+				if(str[n].indexOf(mail)==-1&&str[n]!=''){
+					new_str=new_str+str[n]+','
+				}
+			}
+			target.val(new_str)
+
+			$(this).removeClass('sel_addr');
+		}else{
+			$(this).addClass('sel_addr')
+			mail=$(this).text()
+			name=$('td:first',$(this).parent().parent()).text()
+			target.val(target.val()+',"'+name+'"<'+mail+'>')
+		}
+	});
+});
+</script>
+<style>
+body{margin:0;padding:0;background-color:#AFD6FF;}
+#addrs{width:100%;border-collapse:collapse;}
+#addrs,#addrs td{border:1px solid #333;}
+#addrs td{padding:3px 5px;font-size:10pt;}
+.sel_addr{font-weight:bold;color:#DC7100;}
+tr:hover td{background-color:#f0f0f0;}
+</style>
+	<roundcube:object name="plugin.table" />
+	</body>
+</html>
