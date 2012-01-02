@@ -3,6 +3,7 @@
 class lkk_addressbook extends rcube_plugin{
 	public $task = 'mail';
 	public $action = 'compose';
+	private $global_address = false;
 	private $addrs = array();
 
 	function init(){
@@ -26,6 +27,17 @@ class lkk_addressbook extends rcube_plugin{
 			while($u=$rt->next()){
 				$this->addrs[]=array('name'=>$u['name'],'email'=>$u['email']);
 			}
+
+			//Global AddressBook
+			if($this->global_address===true){
+				$addr=rcmail::get_instance()->get_address_book('global');
+				$addr->set_pagesize(9999);
+				$rt=$addr->list_records(array('name','email'));
+				while($u=$rt->next()){
+					$this->addrs[]=array('name'=>$u['name'],'email'=>$u['email']);
+				}
+			}
+			
 			$output=rcmail::get_instance()->output;
 			$output->set_pagetitle($this->gettext('title'));
 			$output->send('lkk_addressbook.mini_book');
