@@ -2,24 +2,95 @@
 <html>
 	<head>
 		<title><roundcube:object name="pagetitle" /></title>
+		<link rel="stylesheet" type="text/css" href="plugins/lkk_addressbook/skins/default/templates/lkk_abs.css" />
+<style type="text/css">
+<!--
+span.mail_addr {
+  cursor:pointer;
+}
+-->
+</style>
 	</head>
 	<body>
 		<h3 style="text-align:center"><roundcube:object name="plugin.act_title" /></h3>
 <script type="text/javascript">
 $(function(){
 	$(window).focus();
-	var target=$('textarea[id=<roundcube:object name="plugin.target" />]',window.opener.document.body)
+
+        var toccbcc = new Array('_to', '_cc', '_bcc');
+        for (var i = 0; i < toccbcc.length; i++) {
+                lkk_js_01(toccbcc[i]);
+        }
 	//Inito
-	$.each($('.mail_addr'),function(i,v){
-		if(target.val().indexOf($(v).text())>-1){
-			$(v).addClass('sel_addr')
-		}
-	});
+
+	var target=$('textarea[name="_to"]',window.opener.document.body)
+	//Inito
 
 	//Select
-	$('.mail_addr').click(function(){
-		if($(this).hasClass('sel_addr')){
-			mail=$(this).text();
+	$('.mail_addr_to').change(function(){
+	        lkk_js_02(this, '_to');
+	});
+	$('.mail_addr_cc').change(function(){
+	        lkk_js_02(this, '_cc');
+	});
+	$('.mail_addr_bcc').change(function(){
+	        lkk_js_02(this, '_bcc');
+	});
+
+	//Select group
+	$('select[name="group_selector"]').bind('change',function(){
+		lkk_js_group_selector(this, $(this).val());
+	});
+
+        //
+        $('input[name="lkk_button_select_all_to"]').click(function(){
+                lkk_js_select_all('input.mail_addr_to','_to','checked');
+        });
+        $('input[name="lkk_button_select_all_to_off"]').click(function(){
+                lkk_js_select_all('input.mail_addr_to','_to',null);
+        });
+        $('input[name="lkk_button_select_all_cc"]').click(function(){
+                lkk_js_select_all('input.mail_addr_cc','_cc','checked');
+        });
+        $('input[name="lkk_button_select_all_cc_off"]').click(function(){
+                lkk_js_select_all('input.mail_addr_cc','_cc',null);
+        });
+        $('input[name="lkk_button_select_all_bcc"]').click(function(){
+                lkk_js_select_all('input.mail_addr_bcc','_bcc','checked');
+        });
+        $('input[name="lkk_button_select_all_bcc_off"]').click(function(){
+                lkk_js_select_all('input.mail_addr_bcc','_bcc',null);
+        });
+});
+function lkk_js_select_all(s, toccbcc, checked){
+	$.each($(s),function(i,v){
+                if ($(this).is(':visible')) {
+		        $(this).attr('checked',checked);
+	                lkk_js_02(this, toccbcc);
+                }
+        });
+}
+function lkk_js_group_selector(obj, group_id) {
+	//alert('group_selector='+group_id);
+	if (group_id < 0) {
+	    $('tr.group_id_tr').show();
+        } else {
+    	    $('tr.group_id_tr').hide();
+	    $('tr.group_id_'+group_id).show();
+        }
+}
+function lkk_js_01(toccbcc) {
+        var target=$('textarea[name="' + toccbcc + '"]',window.opener.document.body);
+	$.each($('.mail_addr'),function(i,v){
+		if(target.val().indexOf($(v).text())>-1){
+			$('.mail_addr'+toccbcc,$(v).parent()).attr('checked','checked');
+		}
+	});
+}
+function lkk_js_02(obj, toccbcc) {
+                var target=$('textarea[name="'+toccbcc+'"]',window.opener.document.body)
+                var mail=$('span.mail_addr',$(obj).parent()).html();
+                if(!$(obj).is(':checked')) {
 			str=target.val().split(',');
 			new_str='';
 			for(n=0;n<str.length;n++){
@@ -28,25 +99,12 @@ $(function(){
 				}
 			}
 			target.val(new_str)
-
-			$(this).removeClass('sel_addr');
 		}else{
-			$(this).addClass('sel_addr')
-			mail=$(this).text()
-			name=$('td:first',$(this).parent().parent()).text()
+			name=$('td:first',$(obj).parent().parent().parent()).text();
 			target.val(target.val()+',"'+name+'"<'+mail+'>')
 		}
-	});
-});
+}
 </script>
-<style>
-body{margin:0;padding:0;background-color:#AFD6FF;}
-#addrs{width:100%;border-collapse:collapse;}
-#addrs,#addrs td{border:1px solid #333;}
-#addrs td{padding:3px 5px;font-size:10pt;}
-.sel_addr{font-weight:bold;color:#DC7100;}
-tr:hover td{background-color:#f0f0f0;}
-</style>
 	<roundcube:object name="plugin.table" />
 	</body>
 </html>

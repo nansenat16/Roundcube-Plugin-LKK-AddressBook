@@ -1,0 +1,26 @@
+* {
+  font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', Osaka, sans-serif;
+}
+
+body{
+  margin:0;
+  padding:0;
+  background-color:#ffffff;
+}
+
+#addrs{
+  width:100%;
+  border-collapse:collapse;
+}
+
+#addrs,#addrs td{
+  border:1px solid #333;
+}
+
+#addrs td{
+  padding:3px 5px;font-size:10pt;
+}
+
+tr:hover td{
+  background-color:#f0f0f0;
+}

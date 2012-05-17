@@ -1,0 +1,11 @@
+
+td.title label[for="_to"],
+td.title label[for="_cc"],
+td.title label[for="_bcc"] {
+  cursor:pointer;
+}
+
+div.email_address {
+  margin: 0;
+  padding: 0;
+}

@@ -6,3 +6,9 @@ Roundcube-Plugin-LKK-AddressBook, let you view the address book and add email wi
 Screenshot
 ----------
 .. image:: https://github.com/nansenat16/Roundcube-Plugin-LKK-AddressBook/raw/master/screenshot.png
+
+Thank you so much
+----------
+AI.Takeuchi <takeai@silverpigeon.jp> http://takeai.silverpigeon.jp
+  * Add contact group support and UI
+  * Add ja_JP language
